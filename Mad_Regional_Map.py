@@ -1,11 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Sat Nov 14 07:19:18 2020
-
-@author: fouadfaraj
-"""
-
 import numpy as np
 import matplotlib.pyplot as plt
 from scipy.interpolate import griddata
@@ -13,7 +5,14 @@ import matplotlib.colors
 
 
 class FixPointNormalize(matplotlib.colors.Normalize):
+    """ 
+    Inspired by https://stackoverflow.com/questions/20144529/shifted-colorbar-matplotlib
+    Subclassing Normalize to obtain a colormap with a fixpoint 
+    somewhere in the middle of the colormap.
 
+    This may be useful for a `terrain` map, to set the "sea level" 
+    to a color in the blue/turquise range. 
+    """
     def __init__(self, vmin=None, vmax=None, sealevel=0, col_val = 0.21875, clip=False):
         # sealevel is the fix point of the colormap (in data units)
         self.sealevel = sealevel
@@ -57,7 +56,7 @@ z = np.matrix.flatten(z)
 
 cmap = plt.get_cmap('terrain')
 
-#figsize=([6,4]
+
 fig,ax = plt.subplots()
 
 norm = FixPointNormalize(sealevel=0,vmax=np.max(z)-400,vmin=np.min(z)+250)
@@ -96,10 +95,4 @@ plt.rcParams.update({'font.size': S})
 ax.set_yticks(np.linspace(-28,-10,19), minor=True)
 
 
-#plt.tight_layout()
-#rcParams.update({'figure.autolayout': True})
-#plt.gcf().subplots_adjust(top=1.25)
-
-plt.savefig('000.png',pad_inches = 0, facecolor=fig.get_facecolor(), edgecolor='none',dpi=900)
-#plt.yticks([-10,-15,-20,-25])
 
